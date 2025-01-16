@@ -5,6 +5,10 @@ name : Connect to an AWS role from a GitHub repository
 on:
   push:
     branches: [ main ]
+  paths:
+    - .github/workflows/test*.yaml
+    - README.md 
+
 
 env:
   AWS_REGION : us-east-1 #Change to reflect your Region
