@@ -45,11 +45,14 @@ jobs:
         run: 
           working-directory: "terraform/dev"
 
-      - name: tf init
+      - name: setup terraform 
         uses: hashicorp/setup-terraform@v3
 #        with:
 #          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-        run: terraform init
+      - name: Terraform init
+        run: |
+          terraform init
         
       - name: tf plan
-        run: terraform plan
+        run: |
+          terraform plan
