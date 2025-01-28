@@ -39,11 +39,7 @@ data "aws_iam_policy_document" "tfstates_bucket_access" {
     actions = [
       "kms:*",
     ]
-    resources = [
-      "arn:aws:kms:*:${data.aws_caller_identity.main.account_id}:alias/*-tfstates",
-      aws_kms_key.terraform.arn,
-      "arn:aws:sts::${data.aws_caller_identity.main.account_id}:assumed-role/GhaAssumeRoleWithAction/GitHub_to_AWS_via_FederatedOIDC",
-    ]
+   resources = [ "*" ]
   }
 }
 
