@@ -18,32 +18,34 @@ permissions:
       contents: read    # This is required for actions/checkout
 jobs:
   bootstrap:
+    name: Git clone the repository
     runs-on: ubuntu-latest
+
     steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v3
-      - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
+    - name: checkout
+      uses: actions/checkout@v3
+
+    - name: creds
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
           role-to-assume: arn:aws:iam::443370702075:role/GhaAssumeRoleWithAction #change to reflect your IAM role’s ARN
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ env.AWS_REGION }}
           audience: sts.amazonaws.com
       # Test auth 
-      - name: S3 list
-        run: |
-          aws s3 ls
-      - name: set dir
-        run: 
-          working-directory: "terraform/dev"
+    - name: S3 list
+      run: |
+        aws s3 ls
 
-      - name: tf init
-        uses: hashicorp/setup-terraform@v3
-          with:
-            cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-        run: terraform init
-        
-      - name: tf plan
-        run: terraform plan
-        
-         
+#      - name: set dir
+#        run: 
+#          working-directory: "terraform/dev"
+#
+#      - name: tf init
+#        uses: hashicorp/setup-terraform@v3
+#          with:
+#            cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+#        run: terraform init
+#        
+#      - name: tf plan
+#        run: terraform plan
