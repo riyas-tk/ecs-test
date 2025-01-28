@@ -38,21 +38,24 @@ jobs:
         aws s3 ls tfstate-dev-us-east-1/
 
   terraform-bootstrap:
-      name: bootstrap
-      runs-on: ubuntu-latest
-      steps:
-      - name: set working dir 
-        run: 
-          working-directory: "terraform/dev"
+    name: bootstrap
+    runs-on: ubuntu-latest
+    defaults:
+    run:
+      shell: bash
+      working-directory: "terraform/dev"
+    steps:
+    - name: Checkout the repository to the runner
+      uses: actions/checkout@v2
 
-      - name: setup terraform 
-        uses: hashicorp/setup-terraform@v3
-#        with:
-#          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-      - name: Terraform init
-        run: |
-          terraform init
+    - name: setup terraform 
+      uses: hashicorp/setup-terraform@v3
+#      with:
+#        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+    - name: Terraform init
+      run: |
+        terraform init
         
-      - name: tf plan
-        run: |
-          terraform plan
+    - name: tf plan
+      run: |
+        terraform plan
