@@ -42,8 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        shell: bash
-        working-directory: "terraform/dev"
+        working-directory: terraform/dev/bootstrap 
     steps:
     - name: Checkout the repository to the runner
       uses: actions/checkout@v2
