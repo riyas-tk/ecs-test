@@ -8,7 +8,7 @@ on:
     paths:
       - .github/workflows/deployment.yaml
       - README.md 
-
+      - terraform/*
 env:
   AWS_REGION : us-east-1 #Change to reflect your Region
 
