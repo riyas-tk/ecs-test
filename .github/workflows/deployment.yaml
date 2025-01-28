@@ -9,7 +9,6 @@ on:
       - .github/workflows/deployment.yaml
       - README.md 
 
-
 env:
   AWS_REGION : us-east-1 #Change to reflect your Region
 
@@ -18,7 +17,7 @@ permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read    # This is required for actions/checkout
 jobs:
-  AssumeRoleAndCallIdentity:
+  bootstrap:
     runs-on: ubuntu-latest
     steps:
       - name: Git clone the repository
@@ -26,11 +25,25 @@ jobs:
       - name: configure aws credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: arn:aws:iam::443370702075:role/GitHubAction-AssumeRoleWithAction #change to reflect your IAM role’s ARN
+          role-to-assume: arn:aws:iam::443370702075:role/GhaAssumeRoleWithAction #change to reflect your IAM role’s ARN
           role-session-name: GitHub_to_AWS_via_FederatedOIDC
           aws-region: ${{ env.AWS_REGION }}
           audience: sts.amazonaws.com
-      # Hello from AWS: WhoAmI
+      # Test auth 
       - name: S3 list
         run: |
-          aws s3 ls 
+          aws s3 ls
+      - name: set dir
+        run: 
+          working-directory: "terraform/dev"
+
+      - name: tf init
+        uses: hashicorp/setup-terraform@v3
+          with:
+            cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+        run: terraform init
+        
+      - name: tf plan
+        run: terraform plan
+        
+         
