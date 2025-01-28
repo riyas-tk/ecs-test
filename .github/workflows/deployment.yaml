@@ -59,8 +59,7 @@ jobs:
 
     - name: setup terraform 
       uses: hashicorp/setup-terraform@v3
-#      with:
-#        cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
     - name: Terraform init
       run: |
         terraform init
@@ -68,3 +67,8 @@ jobs:
     - name: tf plan
       run: |
         terraform plan
+
+    - name: tf apply
+      run: |
+        terraform apply --auto-approve
+
