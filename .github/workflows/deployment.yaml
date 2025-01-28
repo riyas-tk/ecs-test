@@ -18,7 +18,7 @@ permissions:
       contents: read    # This is required for actions/checkout
 jobs:
   test:
-    name: setup auth and test 
+    name: auth check 
     runs-on: ubuntu-latest
 
     steps:
@@ -37,8 +37,10 @@ jobs:
       run: |
         aws s3 ls tfstate-dev-us-east-1/
 
+
   terraform-bootstrap:
     name: bootstrap
+    needs: test
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -46,6 +48,14 @@ jobs:
     steps:
     - name: Checkout the repository to the runner
       uses: actions/checkout@v2
+
+    - name: Configure aws auth 
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+          role-to-assume: arn:aws:iam::443370702075:role/GhaAssumeRoleWithAction #change to reflect your IAM role’s ARN
+          role-session-name: GitHub_to_AWS_via_FederatedOIDC
+          aws-region: ${{ env.AWS_REGION }}
+          audience: sts.amazonaws.com
 
     - name: setup terraform 
       uses: hashicorp/setup-terraform@v3
