@@ -35,7 +35,7 @@ jobs:
       # Test auth 
     - name: S3 list
       run: |
-        aws s3 ls
+        aws s3 ls tfstate-dev-us-east-1/
 
 #      - name: set dir
 #        run: 
