@@ -17,8 +17,8 @@ permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read    # This is required for actions/checkout
 jobs:
-  bootstrap:
-    name: Git clone the repository
+  test:
+    name: setup auth and test 
     runs-on: ubuntu-latest
 
     steps:
@@ -37,15 +37,16 @@ jobs:
       run: |
         aws s3 ls tfstate-dev-us-east-1/
 
-#      - name: set dir
-#        run: 
-#          working-directory: "terraform/dev"
-#
-#      - name: tf init
-#        uses: hashicorp/setup-terraform@v3
-#          with:
-#            cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-#        run: terraform init
-#        
-#      - name: tf plan
-#        run: terraform plan
+  terraform-bootstrap:
+    - name: set dir
+      run: 
+        working-directory: "terraform/dev"
+
+    - name: tf init
+      uses: hashicorp/setup-terraform@v3
+#        with:
+#          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+      run: terraform init
+        
+    - name: tf plan
+      run: terraform plan
