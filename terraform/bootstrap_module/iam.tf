@@ -9,6 +9,7 @@ data "aws_iam_policy_document" "tfstates_bucket_access" {
       "s3:GetObject",
       "s3:PutObject",
       "s3:DeleteObject",
+      "s3:GetBucketPolicy",
     ]
     resources = [
       "arn:aws:s3:::tfstate-${var.environment}-${var.region}",
@@ -22,6 +23,7 @@ data "aws_iam_policy_document" "tfstates_bucket_access" {
       "dynamodb:GetItem",
       "dynamodb:PutItem",
       "dynamodb:DeleteItem",
+      "dynamodb:DescribeTable",
     ]
     resources = [
       "arn:aws:dynamodb:*:*:table/tfstates-locking",
@@ -31,9 +33,20 @@ data "aws_iam_policy_document" "tfstates_bucket_access" {
   statement {
     effect = "Allow"
     actions = [
+      "iam:GetRole",
+    ]
+    resources = [
+      "arn:aws:iam::${data.aws_caller_identity.main.account_id}:role/GhaAssumeRoleWithAction",
+    ]
+  }
+
+  statement {
+    effect = "Allow"
+    actions = [
       "kms:Encrypt",
       "kms:Decrypt",
       "kms:GenerateDataKey",
+      "kms:DescribeKey",
     ]
     resources = [
       "arn:aws:kms:*:*:alias/*-tfstates",
