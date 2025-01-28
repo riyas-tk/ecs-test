@@ -5,12 +5,7 @@ data "aws_iam_policy_document" "tfstates_bucket_access" {
   statement {
     effect = "Allow"
     actions = [
-      "s3:ListBucket",
-      "s3:GetObject",
-      "s3:PutObject",
-      "s3:DeleteObject",
-      "s3:GetBucketPolicy",
-      "s3:GetBucketAcl",
+      "s3:*",
     ]
     resources = [
       "arn:aws:s3:::tfstate-${var.environment}-${var.region}",
@@ -21,22 +16,17 @@ data "aws_iam_policy_document" "tfstates_bucket_access" {
   statement {
     effect = "Allow"
     actions = [
-      "dynamodb:GetItem",
-      "dynamodb:PutItem",
-      "dynamodb:DeleteItem",
-      "dynamodb:DescribeTable",
-      "dynamodb:DescribeContinuousBackups",
+      "dynamodb:*",
     ]
     resources = [
-      "arn:aws:dynamodb:*:*:table/tfstates-locking",
+      "arn:aws:dynamodb:*:${data.aws_caller_identity.main.account_id}:table/tfstates-locking",
     ]
   }
 
   statement {
     effect = "Allow"
     actions = [
-      "iam:GetRole",
-      "iam:ListRolePolicies",
+      "iam:*",
     ]
     resources = [
       "arn:aws:iam::${data.aws_caller_identity.main.account_id}:role/GhaAssumeRoleWithAction",
@@ -46,14 +36,10 @@ data "aws_iam_policy_document" "tfstates_bucket_access" {
   statement {
     effect = "Allow"
     actions = [
-      "kms:Encrypt",
-      "kms:Decrypt",
-      "kms:GenerateDataKey",
-      "kms:DescribeKey",
-      "kms:GetKeyPolicy",
+      "kms:*",
     ]
     resources = [
-      "arn:aws:kms:*:*:alias/*-tfstates",
+      "arn:aws:kms:*:${data.aws_caller_identity.main.account_id}:alias/*-tfstates",
       aws_kms_key.terraform.arn
     ]
   }
