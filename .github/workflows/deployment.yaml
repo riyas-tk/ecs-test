@@ -16,12 +16,22 @@ env:
 permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read    # This is required for actions/checkout
+
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  LATEST_COMMIT: ${{ github.event.pull_request.head.sha }}
+
 jobs:
   test:
     name: auth check 
     runs-on: ubuntu-latest
 
     steps:
+    - name: echo-git-attr
+      run |
+        echo $BRANCH_NAME
+        echo $LATEST_COMMIT
+
     - name: checkout
       uses: actions/checkout@v3
 
