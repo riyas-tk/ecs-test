@@ -11,15 +11,13 @@ on:
 #      - ./terraform/*
 env:
   AWS_REGION : us-east-1 #Change to reflect your Region
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+  LATEST_COMMIT: ${{ github.event.pull_request.head.sha }}
 
 # Permission can be added at job level or workflow level    
 permissions:
       id-token: write   # This is required for requesting the JWT
       contents: read    # This is required for actions/checkout
-
-env:
-  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-  LATEST_COMMIT: ${{ github.event.pull_request.head.sha }}
 
 jobs:
   test:
