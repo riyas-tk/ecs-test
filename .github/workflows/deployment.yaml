@@ -28,7 +28,7 @@ jobs:
 
     steps:
     - name: echo-git-attr
-      run |
+      run: |
         echo $BRANCH_NAME
         echo $LATEST_COMMIT
 
