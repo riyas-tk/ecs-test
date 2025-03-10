@@ -12,7 +12,7 @@ on:
 env:
   AWS_REGION : us-east-1 #Change to reflect your Region
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-  LATEST_COMMIT: ${{ github.event.pull_request.head.sha }}
+  LATEST_COMMIT: ${{ github.event.push.head.sha }}
 
 # Permission can be added at job level or workflow level    
 permissions:
@@ -28,7 +28,7 @@ jobs:
     - name: echo-git-attr
       run: |
         echo $BRANCH_NAME
-
+        echo $LATEST_COMMIT
     - name: checkout
       uses: actions/checkout@v3
 
