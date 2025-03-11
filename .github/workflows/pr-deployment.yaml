@@ -1,0 +1,20 @@
+on:
+  pull_request:
+    branches:
+      - main
+env:
+  LATEST_COMMIT: ${{ github.event.pull_request.head.sha }}
+
+jobs:
+  initialize-build-deployment:
+    name: Initialize build and deployment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Generate Vars
+        id: vars
+        run: |
+          echo "LATEST_COMMIT: ${LATEST_COMMIT}"
+          sha_short=$(git rev-parse --short ${{ env.LATEST_COMMIT }})
+          echo "sha_short: ${sha_short}"
